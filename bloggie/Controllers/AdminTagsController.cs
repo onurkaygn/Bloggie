@@ -29,12 +29,65 @@ namespace bloggie.Controllers
                 DisplayName = addTagRequest.DisplayName,
             };
 
-
             _bloggieDbContext.Tags.Add(tag);
             _bloggieDbContext.SaveChangesAsync();
-            return View("Add");
+            return RedirectToAction("List");
         }
 
+        [HttpGet]
+        [ActionName("List")]
+        public IActionResult List()
+        {
+           var tags = _bloggieDbContext.Tags.ToList();
+            return View(tags);
+        }
 
+        [HttpGet]
+        public IActionResult Edit(Guid id)
+        {
+
+            var tag = _bloggieDbContext.Tags.FirstOrDefault(x => x.Id == id);
+
+            if (tag is not null)
+            {
+                var editTagRequest = new EditTagRequest
+                {
+                    Id = tag.Id,
+                    Name = tag.Name,
+                    DisplayName = tag.DisplayName
+                };
+
+                return View(editTagRequest);
+            }
+            return View(null);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(EditTagRequest editTagRequest)
+        {
+            var tag = new Tag
+            {
+                Id = editTagRequest.Id,
+                Name = editTagRequest.Name,
+                DisplayName = editTagRequest.DisplayName,
+            };
+
+          
+            var existingTag = _bloggieDbContext.Tags.Find(tag.Id);
+            if (existingTag is not null)
+            {
+                existingTag.Name = tag.Name;
+                existingTag.DisplayName = tag.DisplayName;
+
+                _bloggieDbContext.SaveChanges();
+
+                return RedirectToAction("List");
+            }
+
+            else
+            {
+                return RedirectToAction("List", new {id = editTagRequest.Id});
+            }
+        }   
     }
 }
