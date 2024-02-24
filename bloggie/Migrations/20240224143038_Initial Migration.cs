@@ -37,7 +37,7 @@ namespace bloggie.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DisplayName = table.Column<bool>(type: "bit", nullable: false)
+                    DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

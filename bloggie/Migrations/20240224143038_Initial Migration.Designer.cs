@@ -12,7 +12,7 @@ using bloggie.Data;
 namespace bloggie.Migrations
 {
     [DbContext(typeof(BloggieDbContext))]
-    [Migration("20240224123733_InitialMigration")]
+    [Migration("20240224143038_Initial Migration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -91,8 +91,9 @@ namespace bloggie.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("DisplayName")
-                        .HasColumnType("bit");
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
